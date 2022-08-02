@@ -11,5 +11,5 @@ int main(){
 
     cout <<" você ja dormiu " << idade/3 << " anos desde que nassceu \n";
 
-
+    return 1;
 }
