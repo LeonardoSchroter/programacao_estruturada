@@ -13,7 +13,7 @@
 using namespace std;
 
 int main(){
-    int vetorA[10], vetorB[10], vetorC[20];
+    int vetorA[10], vetorB[10], vetorC[20], cont=0,c=0;
     //Ppoulando o vetorA
     for(int i=0; i<10; i++){
         vetorA[i]= i;
@@ -35,11 +35,11 @@ int main(){
 
     
     for(int i=0; i<20; i++){
-        if(i<=9){
+        if(i<=9){     //if(i%2==0){vetorC[i]=vetorA[c] c++;
             vetorC[i]=vetorA[i];
         }
         else{
-            vetorC[i]=vetorB[i-10];
+            vetorC[i]=vetorB[i-10];    // {vetorC[i]=vetorA[cont] cont++;
         }
        
     }
