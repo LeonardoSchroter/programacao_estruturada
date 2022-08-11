@@ -35,11 +35,12 @@ int main(){
 
     
     for(int i=0; i<20; i++){
-        if(i<=9){     //if(i%2==0){vetorC[i]=vetorA[c] c++;
-            vetorC[i]=vetorA[i];
+        if(i%2==0){
+            vetorC[i]=vetorA[c] c++;
         }
         else{
-            vetorC[i]=vetorB[i-10];    // {vetorC[i]=vetorA[cont] cont++;
+           vetorC[i]=vetorB[cont];
+            cont++;    // {
         }
        
     }
