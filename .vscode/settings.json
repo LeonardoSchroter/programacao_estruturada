@@ -4,6 +4,9 @@
         "ctime": "cpp",
         "string": "cpp",
         "cstdlib": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "xlocale": "cpp"
     }
 }
