@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <sstream>
+#include <ctime>
 #define TAM 10
 
 using namespace std;
@@ -8,8 +10,8 @@ using namespace std;
 typedef struct {
     string placa;
     string data;
-    string horaE;
-    string horaS;
+    int horaE;
+    int horaS;
     int tempoPermanecia;
     float valor;
 } Garagem;
@@ -17,6 +19,9 @@ typedef struct {
 int main() {
     bool encontrei=false;
     int opcao;
+    string horarioAtual;
+    string horaAtual;
+    
     string placa;
     Garagem lista[TAM];
     int totalVeiculos = 0, ultimaVaga=-1;
@@ -38,10 +43,16 @@ int main() {
             cout << "Entrando veiculo....\n";
             if (totalVeiculos == TAM) {
                 cout << "Garagem lotada\n";
-            } else {
+            } 
+            
+            else {
+                totalVeiculos++;
+                ultimaVaga++;
+                
+                
+
                 do{
-                    totalVeiculos++;
-                    ultimaVaga++;
+                    
                     cout <<  "informe a placa do veiculo: ";
                     cin >> lista[ultimaVaga].placa;
                 }while (lista[ultimaVaga].placa.length() != 7);
@@ -49,10 +60,30 @@ int main() {
                     cout << "Digite a data [dd/mm/aaaa]: "; 
                     cin >> lista[ultimaVaga].data;
                 } while (lista[ultimaVaga].data.length() != 10);
+                
                 do{
                     cout << "Digite a hora de entrada[hh:mm]: "; 
-                    cin >> lista[ultimaVaga].horaE;
-                } while (lista[ultimaVaga].horaE.length() != 5);
+                    cin >>  horaAtual;
+
+                    string horaE= horaAtual.substr(0,2);
+                    string minE= horaAtual.substr(3,2);
+                    lista[ultimaVaga].horaE= stoi(horaE) * 60 + stoi(minE) ;
+                    if(lista[ultimaVaga].horaE<=430 || lista[ultimaVaga].horaE>=1320){
+                        cout<< "estamos fechados, volte outra hora\n";
+                        lista[ultimaVaga].placa=nullptr;
+                        lista[ultimaVaga].data=nullptr;
+                        lista[ultimaVaga].horaE=0;
+                        ultimaVaga--;
+                        totalVeiculos--;
+                       
+
+                }
+
+                 } while (horaAtual.length() != 5);
+
+                
+                    
+               
             }
             break;
         case 2:
@@ -63,12 +94,26 @@ int main() {
                  cout << "digite a placa de seu veiculo\n ";
                 cin >> placa;
 
-                for (int i = 0; i <= totalVeiculos; i++) {
+                for (int i = 0; i < totalVeiculos; i++) {
                     if (placa == lista[i].placa) {
+                        cout << "Que horas sao?\n";
+                        cin>> horarioAtual;
+
+                        string horaS= horarioAtual.substr(0,2);
+                        string minS=horarioAtual.substr(3,2);
+                          lista[i].horaS= stoi(horaS) * 60 + stoi(minS) ;
+                          lista[i].tempoPermanecia= lista[i].horaS - lista[i].horaE;
+                       
+
+                        cout<< "voce ficou aqui: "<< lista[i].tempoPermanecia<<" min \n";
                         cout << "Adeus " ;
-                        lista[i].placa= "";
+                        lista[i].placa=nullptr;
+                        lista[i].data=nullptr;
+                        lista[i].horaE=0;
+                        lista[i].horaS=0;
+                        totalVeiculos--;
                         encontrei=true;
-                        break;
+                        
                     
                     }
                 }
