@@ -26,7 +26,7 @@ int main() {
     Garagem lista[TAM];
     int totalVeiculos = 0, ultimaVaga=-1;
     
-    
+    //criando menu para garagem
     do {
         system("cls");
         cout << "Menu Garagem\n";
@@ -39,6 +39,7 @@ int main() {
 
         switch (opcao)
         {
+            //caso garagem esteja lotada, não permitir entradad e outro carro
         case 1:
             cout << "Entrando veiculo....\n";
             if (totalVeiculos == TAM) {
@@ -60,7 +61,7 @@ int main() {
                     cout << "Digite a data [dd/mm/aaaa]: "; 
                     cin >> lista[ultimaVaga].data;
                 } while (lista[ultimaVaga].data.length() != 10);
-                
+                //caso garagem não esteja aberta, o carro não entrara
                 do{
                     cout << "Digite a hora de entrada[hh:mm]: "; 
                     cin >>  horaAtual;
@@ -104,7 +105,9 @@ int main() {
                        
 
                         cout<< "voce ficou aqui: "<< lista[i].tempoPermanecia<<" min \n";
-                        cout << "Adeus " ;
+
+                        
+                        cout << "Adeus " ;      //quando o carro for retirado atributos da posição do vetor são anulados
                         lista[i].placa=nullptr;
                         lista[i].data=nullptr;
                         lista[i].horaE=0;
@@ -126,7 +129,7 @@ int main() {
             if (totalVeiculos == 0) {
                 cout << "Garagem vazia\n";
             } else {
-                for (int i = 0; i <= totalVeiculos; i++) {
+                for (int i = 0; i < totalVeiculos; i++) {
                     cout << "placa: " << lista[i].placa << ". Data: " << lista[i].data << ". Hora: " << lista[i].horaE << endl;
                 }
                 
