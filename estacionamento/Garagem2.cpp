@@ -97,7 +97,7 @@ int main() {
                     if (placa == lista[i].placa) {
                         cout << "Que horas sao?\n";
                         cin>> horarioAtual;
-
+                    //transformar o horario em minutos
                         string horaS= horarioAtual.substr(0,2);
                         string minS=horarioAtual.substr(3,2);
                           lista[i].horaS= stoi(horaS) * 60 + stoi(minS) ;
