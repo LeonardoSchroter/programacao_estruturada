@@ -172,12 +172,18 @@ int main() {
                 cout << "Garagem vazia\n";
             } else {
                 for (int i = 0; i < TAM; i++) {
+
                     if(lista[i].placa== ""){
                         continue;
                     }
                     else{
                     cout << "placa: " << lista[i].placa << ". Data: " << lista[i].data << ". Hora: " << lista[i].horaE << endl;
                     }
+
+                   
+                    cout << "placa: " << lista[i].placa << ". Data: " << lista[i].data << ". Hora: " << lista[i].horaE << endl;
+                    
+
                 }
                 
             }
