@@ -51,7 +51,7 @@ int main(){
 
                         cout << "Digite o seu nome completo \n";
                         getline(cin, vetor[qtdContatos].name);
-                        vetor[qtdContatos].name= paraMaiusculo(vetor[qtdContatos].name);
+                        vetor[qtdContatos].name = paraMaiusculo(vetor[qtdContatos].name);
                         cout<< vetor[qtdContatos].name;
                         cout << "Digite o seu email \n";
                         cin >> vetor[qtdContatos].email;
