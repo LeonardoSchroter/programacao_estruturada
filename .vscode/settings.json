@@ -8,6 +8,8 @@
         "xstring": "cpp",
         "xutility": "cpp",
         "xlocale": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "*.tcc": "cpp",
+        "istream": "cpp"
     }
 }

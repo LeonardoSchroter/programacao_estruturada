@@ -111,3 +111,55 @@ bool remover(Contato vetor[], int *qtd){
    }
    return false;
 }
+
+bool atualizar(Contato vetor[], int qtd){
+     if (qtd==0) return false;
+
+    cout<<"digite o nome que deseja atualizar \n";
+    string nome;
+    bool encontrei;
+    getline(cin,nome);
+    nome = paraMaiusculo(nome);
+
+   for (int i = 0; i < qtd; i++) {
+    if(nome== vetor[i].nome){
+        cout<<"digite o novo nome: ";
+        getline(cin,vetor[i].nome);
+        cout<<"digite o novo email: ";
+        getline(cin,vetor[i].email);
+        cout<<"digite o novo telefone: ";
+        getline(cin,vetor[i].telefone);
+    
+        return true;
+       
+    }
+
+   }
+   return false;
+
+}
+
+bool pesquisar(Contato vetor[], int qtd){
+    if (qtd==0) return false;
+
+    cout<<"digite o nome que deseja pesquisar \n";
+    string nome;
+    bool encontrei;
+    getline(cin,nome);
+    nome = paraMaiusculo(nome);
+
+   for (int i = 0; i < qtd; i++) {
+    if(nome== vetor[i].nome){
+        cout<<vetor[i].nome<<endl;
+        cout<<vetor[i].email<<endl;
+        cout<<vetor[i].telefone<<endl;
+        getline(cin,vetor[i].telefone);
+    
+        return true;
+       
+    }
+
+   }
+   return false;
+
+}

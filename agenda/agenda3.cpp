@@ -47,6 +47,11 @@ int main() {
                 break;
             case 3:
                 cout << "ATUALIZAR\n";
+                if (atualizar(vetor, qtdContatos)) {
+                    cout << "Contato atualizado\n";
+                } else {
+                    cout << "Não ha contato para atualizar.\n";
+                }
 
                 break;
             case 4:
@@ -60,6 +65,11 @@ int main() {
                 break;
             case 5:
                 cout << "PESQUISAR\n";
+                if (pesquisar(vetor, qtdContatos)) {
+                    cout<< "aqui esta\n";
+                } else {
+                    cout << "Estrutura vazia\n";
+                }
 
                 break;
             case 6:
