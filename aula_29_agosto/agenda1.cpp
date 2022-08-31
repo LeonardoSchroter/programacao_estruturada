@@ -10,7 +10,7 @@ using namespace std;
 
 
 typedef struct{
-    string name;
+    string nome;
     string email;
     string telefone;
 }Contato;
@@ -50,9 +50,9 @@ int main(){
                     
 
                         cout << "Digite o seu nome completo \n";
-                        getline(cin, vetor[qtdContatos].name);
-                        vetor[qtdContatos].name = paraMaiusculo(vetor[qtdContatos].name);
-                        cout<< vetor[qtdContatos].name;
+                        getline(cin, vetor[qtdContatos].nome);
+                        vetor[qtdContatos].nome = paraMaiusculo(vetor[qtdContatos].nome);
+                        cout<< vetor[qtdContatos].nome;
                         cout << "Digite o seu email \n";
                         cin >> vetor[qtdContatos].email;
                         cout << "Digite o seu nome telefone \n";

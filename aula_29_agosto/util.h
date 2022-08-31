@@ -87,3 +87,27 @@ bool listar(Contato vetor[], int qtd) {
     }
     return true;
 }
+
+bool remover(Contato vetor[], int *qtd){
+    
+    if (*qtd==0) return false;
+
+    cout<<"digite o nome que deseja remover \n";
+    string nome;
+    bool encontrei;
+    getline(cin,nome);
+    nome = paraMaiusculo(nome);
+
+   for (int i = 0; i < *qtd; i++) {
+    if(nome== vetor[i].nome){
+        vetor[i].nome="";
+        vetor[i].email="";
+        vetor[i].telefone="";
+        *qtd = *qtd - 1;
+        return true;
+       
+    }
+
+   }
+   return false;
+}
