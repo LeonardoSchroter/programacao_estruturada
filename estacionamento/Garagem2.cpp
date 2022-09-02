@@ -47,7 +47,8 @@ int main() {
             } 
             
             else {
-                totalVeiculos++;
+                
+               
                 ultimaVaga++;
                 
                 
@@ -55,12 +56,12 @@ int main() {
                 do{
                     
                     cout <<  "informe a placa do veiculo: ";
-                    cin >> lista[ultimaVaga].placa;
-                }while (lista[ultimaVaga].placa.length() != 7);
+                    cin >> lista[totalVeiculos].placa;
+                }while (lista[totalVeiculos].placa.length() != 7);
                 do{
                     cout << "Digite a data [dd/mm/aaaa]: "; 
-                    cin >> lista[ultimaVaga].data;
-                } while (lista[ultimaVaga].data.length() != 10);
+                    cin >> lista[totalVeiculos].data;
+                } while (lista[totalVeiculos].data.length() != 10);
                 //caso garagem não esteja aberta, o carro não entrara
                 do{
                     cout << "Digite a hora de entrada[hh:mm]: "; 
@@ -68,14 +69,16 @@ int main() {
 
                     string horaE= horaAtual.substr(0,2);
                     string minE= horaAtual.substr(3,2);
-                    lista[ultimaVaga].horaE= stoi(horaE) * 60 + stoi(minE) ;
-                    if(lista[ultimaVaga].horaE<=430 || lista[ultimaVaga].horaE>=1320){
+                    lista[totalVeiculos].horaE= stoi(horaE) * 60 + stoi(minE) ;
+                    if(lista[totalVeiculos].horaE<=430 || lista[totalVeiculos].horaE>=1320){
                         cout<< "estamos fechados, volte outra hora\n";
-                        lista[ultimaVaga].placa=nullptr;
-                        lista[ultimaVaga].data=nullptr;
-                        lista[ultimaVaga].horaE=0;
-                        ultimaVaga--;
-                        totalVeiculos--;
+                        lista[totalVeiculos].placa=nullptr;
+                        lista[totalVeiculos].data=nullptr;
+                        lista[totalVeiculos].horaE=0;
+                        
+                    }
+                    else{
+                         totalVeiculos++;
                     }
 
                  } while (horaAtual.length() != 5);

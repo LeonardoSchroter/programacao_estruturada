@@ -77,12 +77,15 @@ bool inserir(Contato vetor[], int *qtd) {
 bool listar(Contato vetor[], int qtd) {
     if (qtd == 0) return false;
 
-    for (int i = 0; i < qtd; i++) {
+    for (int i = 0; i < TAM; i++) {
         if (vetor[i].nome != "") {
             cout << "Nome: " << vetor[i].nome << endl;
             cout << "Email: " << vetor[i].email << endl;
             cout << "Telefone: " << vetor[i].telefone << endl;
             cout << "--------------------------------------" << endl;
+        }
+        else{
+            continue;
         }
     }
     return true;
