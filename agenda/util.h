@@ -1,3 +1,15 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <sstream>
+#include <ctime>
+#include <cstdio>
+
+#define TAM 10
+ 
+ using namespace std;
+
+
 typedef struct {
     string nome;
     string email;
@@ -142,27 +154,22 @@ bool atualizar(Contato vetor[], int qtd){
 
 }
 
-bool pesquisar(Contato vetor[], int qtd){
-    if (qtd==0) return false;
+bool pesquisar(Contato vetor[], int qtd) {
+    if (qtd == 0) return false;
+    string nomePesquisa;
+    cout << "Digite parte do nome ou nome completo: ";
+    getline(cin,nomePesquisa);
+    nomePesquisa = paraMaiusculo(nomePesquisa);
 
-    cout<<"digite o nome que deseja pesquisar \n";
-    string nome;
-    bool encontrei;
-    getline(cin,nome);
-    nome = paraMaiusculo(nome);
-
-   for (int i = 0; i < qtd; i++) {
-    if(nome== vetor[i].nome){
-        cout<<vetor[i].nome<<endl;
-        cout<<vetor[i].email<<endl;
-        cout<<vetor[i].telefone<<endl;
-        getline(cin,vetor[i].telefone);
-    
-        return true;
-       
+    for (int i = 0; i < TAM; i++) {
+        if (vetor[i].nome != "") {
+            if (vetor[i].nome.find(nomePesquisa) != -1) {
+                cout << "Nome: " << vetor[i].nome << endl;
+                cout << "Email: " << vetor[i].email << endl;
+                cout << "Telefone: " << vetor[i].telefone << endl;
+                cout << "--------------------------------------" << endl;
+            }
+        }
     }
-
-   }
-   return false;
-
+    return true;
 }
