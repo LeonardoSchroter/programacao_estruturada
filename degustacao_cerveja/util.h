@@ -91,7 +91,7 @@ bool inserir(Degustacao vetor[], int *qtd) {
         if (vetor[i].fabricante == "") {
             *qtd = *qtd + 1; //(*qtd)++
             
-            //recebendo um nome
+            //recebendo um fabricante
            do{
             cout << "Entre com nome do fabricante: ";
             getline(cin, nome);
