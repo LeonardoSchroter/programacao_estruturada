@@ -189,14 +189,15 @@ bool atualizar(Degustacao vetor[], int qtd){
             cout<<"digite o novo nome de fabricante: ";
             
             getline(cin,fabricante);
+            
         }while(!validaNome(fabricante));
-        vetor[i].fabricante= fabricante;
+        vetor[i].fabricante= paraMaiusculo(fabricante);
         
         do{
             cout<<"digite o novo tipo: ";
             getline(cin,tipo);
         }while(!validaNome(tipo));
-        vetor[i].tipoCerveja=tipo;
+        vetor[i].tipoCerveja = paraMaiusculo(tipo);
 
 
         do{
