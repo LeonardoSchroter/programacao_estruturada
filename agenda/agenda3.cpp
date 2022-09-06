@@ -1,10 +1,11 @@
-#include <iostream> //cin e cout
-#include <string> 
-#include <stdio.h>
 #define TAM 10
-using namespace std; //omitir o std na frente do cin, por exemplo 
 
 #include "util.h"
+
+
+using namespace std;
+
+
 
 
 int main() {
