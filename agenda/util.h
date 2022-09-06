@@ -46,7 +46,7 @@ void inicializar(Contato vetor[], int n) {
 
 bool validaNomeCompleto(string nome) {
     for (int i = 0; i < nome.length(); i++) {
-        if (nome[i] == ' ' && (nome[i+1] != ' ' || nome[i+1] != '\n')){
+        if (nome[i] == ' ' && (nome[i+1] != ' ' || nome[i+1] != '\n' || nome[nome.length()-1] != ' ')){
             return true;
         }
     }

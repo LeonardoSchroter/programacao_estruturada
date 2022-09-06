@@ -17,6 +17,27 @@ typedef struct{
 }Degustacao;
 
 
+bool validaData(string data){
+    if (data == "" || data.length() != 10 || data[2] != '/' || data[5] != '/'){
+        return false;
+    }
+    //06/09/2022
+    for (int i = 0; i < data.length(); i++) {
+        //cout << data[i] << " " << i << endl;
+        if (data[i] == '/' && (i != 2 && i != 5)) {
+            return false;
+        }
+    }
+    int dia = stoi(data.substr(0,2));
+    if (dia < 1 || dia > 31) return false;
+
+    int mes = stoi(data.substr(3,2));
+    if (mes < 1 || mes > 12) return false;
+
+    return true;
+}
+
+
 
 
 
@@ -52,6 +73,12 @@ void inicializar(Degustacao vetor[], int n) {
         vetor[i].nota = 0;
     }
 }
+bool validaNome(string nome){
+    if (nome == "" || nome[0] == ' ' || nome[nome.length() ] == ' '){
+        return false;
+    }
+    return true;
+}
 
 
 
@@ -65,30 +92,35 @@ bool inserir(Degustacao vetor[], int *qtd) {
             *qtd = *qtd + 1; //(*qtd)++
             
             //recebendo um nome
-           
+           do{
             cout << "Entre com nome do fabricante: ";
             getline(cin, nome);
+           }while(!validaNome(nome));
+            
             nome = paraMaiusculo(nome);
             
             vetor[i].fabricante = nome;
 
             //recebendo um tipo
-            cout << "Entre com tipo de cerveja: ";
-            getline(cin, tipo);
+            do{
+                cout << "Entre com tipo de cerveja: ";
+                
+                getline(cin, tipo);
+            }while(!validaNome(tipo));
             tipo = paraMaiusculo(tipo);
             vetor[i].tipoCerveja = tipo;
 
             //recebendo uma data
             do{
-            cout << "Entre a data da degustacao[dd/mm/aaaa]: ";
-            cin>> vetor[i].dataDegustacao;   
-            }while (!verificaData(vetor[i].dataDegustacao));
+                cout << "Entre a data da degustacao[dd/mm/aaaa]: ";
+                cin>> vetor[i].dataDegustacao;   
+            }while (!validaData(vetor[i].dataDegustacao));
             
             
-                   
+            //recebendo uma nota
             do{
-            cout << "Entre a nota para a cerveja[0 a 5]: ";
-            cin >> vetor[i].nota;   
+                cout << "Entre a nota para a cerveja[0 a 5]: ";
+                cin >> vetor[i].nota;   
             }while(!verificaNota(vetor[i].nota));
             break;        
         }
@@ -145,27 +177,37 @@ bool atualizar(Degustacao vetor[], int qtd){
 
     cout<<"digite o nome do fabricante que deseja atualizar \n";
     string nome;
+    string fabricante;
+    string tipo;
     bool encontrei;
     getline(cin,nome);
     nome = paraMaiusculo(nome);
      
    for (int i = 0; i < qtd; i++) {
     if(nome== vetor[i].fabricante){
-        cout<<"digite o novo nome de fabricante: ";
-        string fabricante;
-        getline(cin,fabricante);
+        do{
+            cout<<"digite o novo nome de fabricante: ";
+            
+            getline(cin,fabricante);
+        }while(!validaNome(fabricante));
         vetor[i].fabricante= fabricante;
         
-        string tipo;
-        cout<<"digite o novo tipo: ";
-        getline(cin,tipo);
+        do{
+            cout<<"digite o novo tipo: ";
+            getline(cin,tipo);
+        }while(!validaNome(tipo));
         vetor[i].tipoCerveja=tipo;
+
+
+        do{
+            cout<<"digite a nova data de degustacao: ";
+            cin>> vetor[i].dataDegustacao;
+        }while(!validaData(vetor[i].dataDegustacao));
         
-        cout<<"digite a nova data de degustacao: ";
-        cin>> vetor[i].dataDegustacao;
-        
-        cout<<"digite a nova nota: ";
-        cin>> vetor[i].nota;
+        do{
+            cout<<"digite a nova nota: ";
+            cin>> vetor[i].nota;
+        }while(!verificaNota(vetor[i].nota));
     
         return true;
        
