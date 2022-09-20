@@ -223,11 +223,11 @@ bool atualizar(ordem_de_servico vetor[], int qtd){
 
         do{
             cout<<"digite a nova hora da ordem: ";
-            cin>> vetor[i].data;
+            cin>> vetor[i].hora;
         }while(!verificaHora(vetor[i].hora));
 
         do{
-            cout<<"digite o novo descricao: ";
+            cout<<"digite a novo descricao: ";
             getline(cin,nome);
         }while(!validaNome(nome));
         vetor[i].descricao = paraMaiusculo(nome);
