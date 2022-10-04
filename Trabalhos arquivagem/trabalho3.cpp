@@ -3,104 +3,149 @@
 #include <string>
 using namespace std;
 
-typedef struct{
+
+#include "util.h"
+
+typedef struct {
     string nome;
     string email;
-}Contato;
+} Contato;
 
-int contarContatosArquivo(string nomeArquivo){
-    ifstream procuradorArquivo;
-    procuradorArquivo.open(nomeArquivo);
+int contarContatosArquivo(string nomeArquivo) {
+    ifstream procuradorLeitura;
+    procuradorLeitura.open(nomeArquivo);
 
-    if(!procuradorArquivo){
-        return 0;
-    }
+    if (!procuradorLeitura) return 0;
+
     int qtdContatos = 0;
     string linha;
-    while (!procuradorArquivo.eof()) {
-		getline(procuradorArquivo,linha); //lendo a linha inteira
-        if(linha=="") break;
+    while (!procuradorLeitura.eof()) {
+		getline(procuradorLeitura,linha); //lendo a linha inteira
+        if (linha == "") break;
 		qtdContatos++;
 	}
-    procuradorArquivo.close();
+    procuradorLeitura.close();
     return qtdContatos;
 }
 
-void popularListaArquivo(Contato *lista, string nomeArquivo){
-    ifstream procuradorArquivo;
-    procuradorArquivo.open(nomeArquivo);
+void popularListaArquivo(Contato *lista, string nomeArquivo) {
+    ifstream procuradorLeitura;
+    procuradorLeitura.open(nomeArquivo);
+    string nome, email;
+    int i = 0;
 
-    
-    int i=0;
-    string linha, nome, email;
-    int posicao;
-    while (!procuradorArquivo.eof()) {
-		getline(procuradorArquivo,linha); //lendo a linha inteira
-        if(linha=="") break;
-        posicao = linha.find(";");
-        nome = linha.substr(0, posicao);
-        email = linha.substr(posicao+1, 200);
+    string linha;
+    while (!procuradorLeitura.eof()) {
+		getline(procuradorLeitura,linha); //lendo a linha inteira
+        if (linha == "") break;
+
+        int posicaoPontoVirgula = linha.find(";");
+        nome = linha.substr(0, posicaoPontoVirgula);
+        email = linha.substr(posicaoPontoVirgula + 1, 200);
 
         lista[i].nome = nome;
         lista[i].email = email;
         i++;
-		
 	}
-    procuradorArquivo.close();
-   
+    procuradorLeitura.close();
 }
 
-void exibirLista(Contato *lista, int qtdContatos){
-    for(int i=0; i < qtdContatos; i++){
-        cout << "Nome: " << lista[i].nome << "  Email: " << lista[i].email << endl;
+void exibirLista(Contato *lista, int qtdContatos) {
+    for (int i = 0; i < qtdContatos; i++) {
+        cout << "Nome: " << lista[i].nome << " Email: " << lista[i].email << endl;
     }
 }
 
-void menu(Contato *lista, int qtdContatos){
-    int opcao;
-    do {
-        system("cls");
-        cout <<  "MENU\n";
-        cout << "1 - Cadastrar contato" << endl;
-        cout << "2 - Listar contatos" << endl;
-        cout << "3 - Sair\n";
-        cout << "Opcao: ";
-        cin >> opcao; 
 
-
-        switch(opcao){
-            case 1 :
-                cout<<"CADASTRO DE CONTATO\n";
-                break;
-            case 2:
-                cout << "LISTANDO CONTATOS\n";
-                exibirLista(lista, qtdContatos);
-                break;
-            case 3:
-                break; 
-            default:
-                cout << "OPCAO INVALIDA";
-                break;
+bool jaCadastrado(string nome, Contato *lista, int qtdContatos) {
+    for (int i = 0; i < qtdContatos; i++) {
+        if (lista[i].nome == nome) {
+            return true;
         }
-        system("pause");
-    } while(opcao != 3);
+    }
+    return false;
 }
 
-#include "util.h"
+void cadastrarNaLista(Contato *lista, int *qtdContatos, string nomeArquivo) {
+    ofstream procuradorEscrita;
+    string nome, email;
+    procuradorEscrita.open(nomeArquivo, ios::out | ios::app);
+    cout << "Contato sendo cadastrado na posicao " << *qtdContatos << endl;
+    do {
+        cout << "Digite seu nome completo: ";
+        getline(cin, nome);
+        nome = paraMaiusculo(nome);
+    } while (!validaNomeCompleto(nome));
 
-int main(){
+    cout << "Digite seu email: ";
+    cin >> email;
+
+
+    //teria que verificar se esse par nome e email já estão na lista
+    if (jaCadastrado(nome, lista, *qtdContatos)) {
+     cout << "Erro: contato ja cadastrado no sistema\n";   
+    } else {
+        lista[*qtdContatos].nome = nome;
+        lista[*qtdContatos].email = email;
+        *qtdContatos = *qtdContatos + 1;
+        procuradorEscrita << nome << ";" << email << endl;
+        //adicionar no final do arquivo
+    }
+    
+
+    procuradorEscrita.close();
+}
+
+void menu(Contato *lista, int qtdContatos, string nomeArquivo) {
+    int opcao;
+    int tecla;
+    do {
+        //system("cls");
+        cout << "MENU\n";
+        cout << "1 - Cadastrar contato\n";
+        cout << "2 - Listar contatos\n";
+        cout << "3 - Sair\n";
+        cout << "Opcao: ";
+        cin >> opcao;
+        cin.ignore();
+
+        switch (opcao)
+        {
+        case 1:
+            cout << "CADASTRO DE CONTATO\n";
+            cadastrarNaLista(lista, &qtdContatos, nomeArquivo);
+            break;
+        case 2:
+            cout << "LISTAGEM DE CONTATOS\n";
+            exibirLista(lista,qtdContatos);
+            break;
+        case 3:            
+            break;
+        default:
+            cout << "Opcao invalida!!\n";
+            break;
+        }
+
+        system("pause");
+        
+    } while (opcao != 3);
+}
+
+
+int main() {
     Contato *lista;
-    int qtdContatos;
+    int quantidadeContatos;
+    string nomeArquivo = "dadosTrab3.csv";
 
-    //DESCOBRIR QUANTOS ELEMENTOS HÁ NO ARQUIVO, PARAD DEFINIR O TAMANHO DA LISTA
-    qtdContatos = contarContatosArquivo("dadosTrab3.csv");
-    lista = (Contato*)malloc(sizeof(Contato) * (qtdContatos+100));
+    //descobrir quantos elementos ha no arquivo, para definir o tamanho da lista
+    quantidadeContatos = contarContatosArquivo(nomeArquivo);
+    lista = (Contato*)malloc(sizeof(Contato) * (quantidadeContatos + 100));
 
-    
-    //Poupular a lsita
-    popularListaArquivo(lista,"dadosTrab3.csv");
-    
-    menu(lista,qtdContatos);
+    //popular lista com dados do arquivo
+    popularListaArquivo(lista,nomeArquivo);
+
+    //chamar menu
+    menu(lista, quantidadeContatos, nomeArquivo);
 
     return 1;
 }
