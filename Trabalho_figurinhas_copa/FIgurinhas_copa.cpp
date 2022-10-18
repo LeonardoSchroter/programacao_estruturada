@@ -14,26 +14,33 @@ typedef struct{
     int quantidade;
     bool especial;
     float preco_estimado;
-}Figurinhas;
+}FigurinhasRepetidas;
+typedef struct{
+    string codigo;
+    string jogador;
+    string selecao;
+    bool especial;
+    float preco_estimado;
+}FigurinhasFaltando;
 
 #include "util.h"
 
 int main() {
-  Figurinhas *listaFigurasRepetidas; 
+  FigurinhasRepetidas *listaFigurasRepetidas; 
   string *listaFaltas;   
-  int quantidadefiguras;
-  int quantidadePresencas;
-  string nomeArquivofiguras = "figuras.csv";
-  string nomeArquivoPresencas = "presencas.csv";
+  int quantidadefigurasRepetidas;
+  int quantidadeFigurasFaltantes;
+  string nomeArquivofigurasRepetidas = "figurasRepetidas.csv";
+  string nomeArquivoFigurasFaltantes = "figurasFaltando.csv";
 
-  quantidadefiguras = contarLinhasArquivo(nomeArquivofiguras);
-  quantidadePresencas = contarLinhasArquivo(nomeArquivoPresencas);
-  listaFigurasRepetidas =(Figurinhas *)malloc(sizeof(Figurinhas) * (quantidadefiguras + 600));
-  listaFaltas =(string *)malloc(sizeof(string) * (quantidadePresencas + 600));
+  quantidadefigurasRepetidas = contarLinhasArquivo(nomeArquivofigurasRepetidas);
+  quantidadeFigurasFaltantes = contarLinhasArquivo(nomeArquivoFigurasFaltantes);
+  listaFigurasRepetidas =(FigurinhasRepetidas *)malloc(sizeof(FigurinhasRepetidas) * (quantidadefigurasRepetidas + 600));
+  listaFigurasFaltantes =(FigurinhasFaltando *)malloc(sizeof(FigurinhasFaltando) * (quantidadeFigurasFaltantes + 600));
 
   // popular lista com dados do arquivo ao iniciar o sistema
-  popularListaArquivofiguras(listaFigurasRepetidas, nomeArquivofiguras);
-  popularListaArquivoPresencas(listaFaltas, nomeArquivoPresencas);
+  popularListaArquivofigurasRepetidas(listaFigurasRepetidas, nomeArquivofigurasRepetidas);
+  popularListaArquivoFigurasFaltantes(listaFaltas, nomeArquivoFigurasFaltantes);
   // chamar menu
   menu(listaFigurasRepetidas, listaFaltas, quantidadefiguras, quantidadePresencas,
        nomeArquivofiguras, nomeArquivoPresencas);
