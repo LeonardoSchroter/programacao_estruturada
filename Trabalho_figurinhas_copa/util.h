@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-
 bool validaNomeCompleto(string nome) {
   for (int i = 0; i < nome.length(); i++) {
     if (nome[i] == ' ' && (nome[i + 1] != ' ' || nome[i + 1] != '\n')) {
@@ -15,17 +13,47 @@ string paraMaiusculo(string frase) {
   }
   return frase;
 }
-void splitstr(string str, string deli = ";")
-{
-    int start = 0;
-    int end = str.find(deli);
-    while (end != -1) {
-        cout << str.substr(start, end - start) << endl;
-        start = end + deli.size();
-        end = str.find(deli, start);
-    }
-    cout << str.substr(start, end - start);
+   
+  void splitRepetidas(FigurinhasRepetidas figuras[], string str, int i, string deli = " ") {
+  int start = 0;
+  int end = str.find(deli);
+  
+
+  figuras[i].codigo = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].jogador = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].selecao = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].quantidade = stoi(str.substr(start, end - start));
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].preco_estimado = stof(str.substr(start, end - start));
+  start = end + deli.size();
+  end = str.find(deli, start);
 }
+
+void splitFaltantes(FigurinhasFaltando figuras[], string str, int i,  string deli = " ") {
+  int start = 0;
+  int end = str.find(deli);
+ 
+  figuras[i].codigo = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].jogador = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].selecao = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  figuras[i].preco_estimado = stof(str.substr(start, end - start));
+  start = end + deli.size();
+  end = str.find(deli, start);
+}
+
 
 int contarLinhasArquivo(string nomeArquivo) {
   ifstream procuradorLeitura;
@@ -46,7 +74,7 @@ int contarLinhasArquivo(string nomeArquivo) {
   return qtdLinhas;
 }
 
-void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nomeArquivo) {
+void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nomeArquivo, int *qtd ) {
   ifstream procuradorLeitura;
   procuradorLeitura.open(nomeArquivo);
   string nome, selecao ,codigo;
@@ -59,29 +87,17 @@ void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nome
     if (linha == "")
       break;
 
-    int posicaoPrimeiroPontoVirgula = linha.find(";");
-    int posicaoUltimoPontoVirgula = linha.find_last_of(";");
-    cout << linha << endl;
-    cout << "posicaoUltimoPontoVirgula: " << posicaoUltimoPontoVirgula << endl;
-
-    nome = linha.substr(0, posicaoPrimeiroPontoVirgula);
-    email = linha.substr(posicaoPrimeiroPontoVirgula + 1,
-                         posicaoUltimoPontoVirgula -
-                         (posicaoPrimeiroPontoVirgula + 1));
-    matricula = linha.substr(posicaoUltimoPontoVirgula + 1, 200);
-
-    lista[i].jogador = nome;
-    lista[i].email = email;
-    lista[i].matricula = matricula;
+    splitRepetidas(lista, linha, i , ";");
     i++;
   }
   procuradorLeitura.close();
 }
 
-void popularListaArquivoPresencas(string *lista, string nomeArquivo) {
+void popularListaArquivoFigurasFaltantes(FigurinhasFaltando *lista, string nomeArquivo, int *qtd) {
   ifstream procuradorLeitura;
   procuradorLeitura.open(nomeArquivo);
-  string matricula;
+  string nome, selecao ,codigo;
+  int qtd;
   int i = 0;
 
   string linha;
@@ -90,16 +106,12 @@ void popularListaArquivoPresencas(string *lista, string nomeArquivo) {
     if (linha == "")
       break;
 
-    int posicaoPrimeiroPontoVirgula = linha.find(";");
-
-    matricula = linha.substr(0, posicaoPrimeiroPontoVirgula);
-
-    lista[i] = matricula;
-
-    i++;
+    splitFaltantes(lista, linha, i , ";");
   }
   procuradorLeitura.close();
 }
+
+
 
 void exibirListaFigurasRepetidas(FigurinhasRepetidas *lista, int qtdInscritos) {
   for (int i = 0; i < qtdInscritos; i++) {
@@ -109,9 +121,25 @@ void exibirListaFigurasRepetidas(FigurinhasRepetidas *lista, int qtdInscritos) {
   }
 }
 
+void exibirListaFigurasFaltantes(FigurinhasFaltando *lista, int qtdInscritos) {
+  for (int i = 0; i < qtdInscritos; i++) {
+    cout << "Codigo: " << lista[i].codigo << ". Jogador: " << lista[i].jogador
+         << ".Selecao : " << lista[i].selecao << ".Especial: " 
+         << lista[i].especial << ".Preco estimado: " << lista[i].preco_estimado << endl;
+  }
+}
+
 
 
 bool jaCadastrado(string codigo, FigurinhasRepetidas *lista, int qtdInscritos) {
+  for (int i = 0; i < qtdInscritos; i++) {
+    if (lista[i].codigo == codigo) {
+      return true;
+    }
+  }
+  return false;
+}
+bool jaCadastradoFaltantes(string codigo, FigurinhasFaltando *lista, int qtdInscritos) {
   for (int i = 0; i < qtdInscritos; i++) {
     if (lista[i].codigo == codigo) {
       return true;
@@ -129,7 +157,7 @@ bool jaCadastradoMatricula(string matricula, string *lista, int qtdPresencas) {
   return false;
 }
 
-void cadastrarNaListaInscritos(FigurinhasRepetidas *lista, int *qtdFiguras,
+void cadastrarNaListaFigurasRepetidas(FigurinhasRepetidas *lista, int *qtdFiguras,
                                string nomeArquivo) {
   ofstream procuradorEscrita;
   string nome, codigo, selecao;
@@ -184,9 +212,62 @@ void cadastrarNaListaInscritos(FigurinhasRepetidas *lista, int *qtdFiguras,
   procuradorEscrita.close();
 }
 
-void menu(Inscrito *listaInscritos, string *listaPresencas, int qtdInscritos,
-          int qtdPresencas, string nomeArquivoInscritos,
-          string nomeArquivoPresencas) {
+void cadastrarNaListaFigurasFaltantes(FigurinhasFaltando *lista, int *qtdFiguras,
+                               string nomeArquivo) {
+  ofstream procuradorEscrita;
+  string nome, codigo, selecao;
+  bool rara = false;
+  int op, quantidade;
+  float precoEstimado;
+  procuradorEscrita.open(nomeArquivo, ios::out | ios::app);
+  cout << "Figura sendo cadastrada na posicao: " << *qtdFiguras << endl;
+  do {
+    cout << "Digite o nome do jogador: ";
+    getline(cin, nome);
+    nome = paraMaiusculo(nome);
+  } while (!validaNomeCompleto(nome));
+
+  cout << "Digite o codigo da figura: ";
+  cin >> codigo;
+
+  cout << "Digite a selecao: ";
+  cin >> selecao;
+  
+  cout << "Digite o preco estimado: ";
+  cin >> precoEstimado;
+  
+  
+
+  cout << "Digite 1 se a figura for rara e 2 para nao rara: ";
+
+  cin >> op;
+
+  if(op ==1){
+    rara = true;
+  }
+
+
+  // teria que verificar se esse par nome e email já estão na lista
+  if (jaCadastradoFaltantes(codigo, lista, *qtdFiguras)) {
+    cout << "Erro: Figura ja cadastrada no sistema\n";
+  } else {
+    lista[*qtdFiguras].codigo = codigo;
+    lista[*qtdFiguras].selecao = selecao;
+    lista[*qtdFiguras].jogador = nome;
+    lista[*qtdFiguras].especial = rara;
+    lista[*qtdFiguras].preco_estimado = precoEstimado;
+    
+
+    *qtdFiguras = *qtdFiguras + 1;
+    // adicionar no final do arquivo
+    procuradorEscrita << codigo << ";" << nome << ";" << selecao  << ";" << quantidade << ";" << rara << ";" << precoEstimado << endl;
+  }
+  procuradorEscrita.close();
+}
+
+void menu(FigurinhasRepetidas *listaFigurasRepetidas, FigurinhasFaltando *listaFigurasFaltantes, int qtdInscritos,
+          int qtdPresencas, string nomeArquivoFigurasRepetidas,
+          string nomeArquivoFigurasFaltantes) {
   int opcao;
   int tecla;
   do {
@@ -203,22 +284,22 @@ void menu(Inscrito *listaInscritos, string *listaPresencas, int qtdInscritos,
 
     switch (opcao) {
     case 1:
-      cout << "INSCRICAO\n";
-      cadastrarNaListaInscritos(listaInscritos, &qtdInscritos,
-                                nomeArquivoInscritos);
+      cout << "CADASTRAR\n";
+      cadastrarNaListaFigurasRepetidas(listaFigurasRepetidas, &qtdInscritos,
+                                nomeArquivoFigurasRepetidas);
       break;
     case 2:
-      cout << "LISTAGEM DE INSCRITOS\n";
-      exibirListaInscritos(listaInscritos, qtdInscritos);
+      cout << "LISTAGEM DE REPETIDAS\n";
+      exibirListaFigurasRepetidas(listaFigurasRepetidas, qtdInscritos);
       break;
     case 3:
-      cout << "REGISTRAR PRESENCA\n";
-      cadastrarNaListaPresencas(listaPresencas, &qtdPresencas,
-                                nomeArquivoPresencas);
+      cout << "REGISTRAR FALTANTES\n";
+      cadastrarNaListaFigurasFaltantes(listaFigurasFaltantes, &qtdPresencas,
+                                nomeArquivoFigurasFaltantes);
       break;
     case 4:
-      cout << "LISTAGEM DE PRSENTES\n";
-      exibirListaPresencas(listaPresencas, qtdPresencas);
+      cout << "LISTAGEM DE FALTANTES\n";
+      exibirListaFigurasFaltantes(listaFigurasFaltantes, qtdPresencas);
       break;
     case 5:
       break;
@@ -231,4 +312,3 @@ void menu(Inscrito *listaInscritos, string *listaPresencas, int qtdInscritos,
 
   } while (opcao != 5);
 }
-
