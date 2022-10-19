@@ -1,7 +1,6 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <cstdlib>
 #include <sstream>
 #include <cstdio>
@@ -27,7 +26,7 @@ typedef struct{
 
 int main() {
   FigurinhasRepetidas *listaFigurasRepetidas; 
-  string *listaFaltas;   
+  FigurinhasFaltando *listaFigurasFaltantes;   
   int quantidadefigurasRepetidas;
   int quantidadeFigurasFaltantes;
   string nomeArquivofigurasRepetidas = "figurasRepetidas.csv";
