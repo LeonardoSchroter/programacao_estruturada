@@ -1,3 +1,5 @@
+
+
 bool validaNomeCompleto(string nome) {
   for (int i = 0; i < nome.length(); i++) {
     if (nome[i] == ' ' && (nome[i + 1] != ' ' || nome[i + 1] != '\n')) {
@@ -31,6 +33,14 @@ string paraMaiusculo(string frase) {
   figuras[i].quantidade = stoi(str.substr(start, end - start));
   start = end + deli.size();
   end = str.find(deli, start);
+  if(str.substr(start, end - start)=="Especial"){
+    figuras[i].especial = true;
+  }
+  else{
+    figuras[i].especial = false;
+  }
+  start = end + deli.size();
+  end = str.find(deli, start);
   figuras[i].preco_estimado = stof(str.substr(start, end - start));
   start = end + deli.size();
   end = str.find(deli, start);
@@ -38,6 +48,7 @@ string paraMaiusculo(string frase) {
 
 void splitFaltantes(FigurinhasFaltando figuras[], string str, int i,  string deli = " ") {
   int start = 0;
+  bool rara = false;
   int end = str.find(deli);
  
   figuras[i].codigo = str.substr(start, end - start);
@@ -47,6 +58,12 @@ void splitFaltantes(FigurinhasFaltando figuras[], string str, int i,  string del
   start = end + deli.size();
   end = str.find(deli, start);
   figuras[i].selecao = str.substr(start, end - start);
+  start = end + deli.size();
+  end = str.find(deli, start);
+  if(str.substr(start, end - start) == "Especial"){
+    rara = true;
+  }
+  figuras[i].especial = rara;
   start = end + deli.size();
   end = str.find(deli, start);
   figuras[i].preco_estimado = stof(str.substr(start, end - start));
@@ -74,7 +91,7 @@ int contarLinhasArquivo(string nomeArquivo) {
   return qtdLinhas;
 }
 
-void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nomeArquivo, int *qtd ) {
+void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nomeArquivo) {
   ifstream procuradorLeitura;
   procuradorLeitura.open(nomeArquivo);
   string nome, selecao ,codigo;
@@ -93,7 +110,7 @@ void popularListaArquivofigurasRepetidas(FigurinhasRepetidas *lista, string nome
   procuradorLeitura.close();
 }
 
-void popularListaArquivoFigurasFaltantes(FigurinhasFaltando *lista, string nomeArquivo, int *qtd) {
+void popularListaArquivoFigurasFaltantes(FigurinhasFaltando *lista, string nomeArquivo) {
   ifstream procuradorLeitura;
   procuradorLeitura.open(nomeArquivo);
   string nome, selecao ,codigo;
@@ -148,20 +165,14 @@ bool jaCadastradoFaltantes(string codigo, FigurinhasFaltando *lista, int qtdInsc
   return false;
 }
 
-bool jaCadastradoMatricula(string matricula, string *lista, int qtdPresencas) {
-  for (int i = 0; i < qtdPresencas; i++) {
-    if (lista[i] == matricula) {
-      return true;
-    }
-  }
-  return false;
-}
+
 
 void cadastrarNaListaFigurasRepetidas(FigurinhasRepetidas *lista, int *qtdFiguras,
                                string nomeArquivo) {
   ofstream procuradorEscrita;
   string nome, codigo, selecao;
-  bool rara = false;
+  string rara ;
+  bool especial = false;
   int op, quantidade;
   float precoEstimado;
   procuradorEscrita.open(nomeArquivo, ios::out | ios::app);
@@ -189,7 +200,12 @@ void cadastrarNaListaFigurasRepetidas(FigurinhasRepetidas *lista, int *qtdFigura
   cin >> op;
 
   if(op ==1){
-    rara = true;
+    rara = "Especial";
+    especial = true;
+  }
+  else{
+    rara = "";
+    especial = false;
   }
 
 
@@ -200,7 +216,7 @@ void cadastrarNaListaFigurasRepetidas(FigurinhasRepetidas *lista, int *qtdFigura
     lista[*qtdFiguras].codigo = codigo;
     lista[*qtdFiguras].selecao = selecao;
     lista[*qtdFiguras].jogador = nome;
-    lista[*qtdFiguras].especial = rara;
+    lista[*qtdFiguras].especial = especial;
     lista[*qtdFiguras].quantidade = quantidade;
     lista[*qtdFiguras].preco_estimado = precoEstimado;
     
@@ -217,6 +233,7 @@ void cadastrarNaListaFigurasFaltantes(FigurinhasFaltando *lista, int *qtdFiguras
   ofstream procuradorEscrita;
   string nome, codigo, selecao;
   bool rara = false;
+  string especial = "";
   int op, quantidade;
   float precoEstimado;
   procuradorEscrita.open(nomeArquivo, ios::out | ios::app);
@@ -244,6 +261,7 @@ void cadastrarNaListaFigurasFaltantes(FigurinhasFaltando *lista, int *qtdFiguras
 
   if(op ==1){
     rara = true;
+    especial = "Especial";
   }
 
 
@@ -260,7 +278,7 @@ void cadastrarNaListaFigurasFaltantes(FigurinhasFaltando *lista, int *qtdFiguras
 
     *qtdFiguras = *qtdFiguras + 1;
     // adicionar no final do arquivo
-    procuradorEscrita << codigo << ";" << nome << ";" << selecao  << ";" << quantidade << ";" << rara << ";" << precoEstimado << endl;
+    procuradorEscrita << codigo << ";" << nome << ";" << selecao  << ";"   << especial << ";" << precoEstimado << endl;
   }
   procuradorEscrita.close();
 }
@@ -284,18 +302,19 @@ void menu(FigurinhasRepetidas *listaFigurasRepetidas, FigurinhasFaltando *listaF
 
     switch (opcao) {
     case 1:
-      cout << "CADASTRAR\n";
+      cout << "CADASTRAR REPETIDAS\n";
       cadastrarNaListaFigurasRepetidas(listaFigurasRepetidas, &qtdInscritos,
                                 nomeArquivoFigurasRepetidas);
       break;
     case 2:
-      cout << "LISTAGEM DE REPETIDAS\n";
-      exibirListaFigurasRepetidas(listaFigurasRepetidas, qtdInscritos);
-      break;
-    case 3:
-      cout << "REGISTRAR FALTANTES\n";
+      cout << "CADASTRAR FALTANTES\n";
       cadastrarNaListaFigurasFaltantes(listaFigurasFaltantes, &qtdPresencas,
                                 nomeArquivoFigurasFaltantes);
+      break;
+    case 3:
+      cout << "LISTAGEM DE REPETIDAS\n";
+      exibirListaFigurasRepetidas(listaFigurasRepetidas, qtdInscritos);
+      
       break;
     case 4:
       cout << "LISTAGEM DE FALTANTES\n";
